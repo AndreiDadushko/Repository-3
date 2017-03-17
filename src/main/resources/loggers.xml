@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        ">
+
+	<bean id="fileEventLogger" class="com.yet.spring.FileEventLogger"
+		init-method="init">
+		<constructor-arg value="C:/d1.txt" />
+	</bean>
+	<bean id="eventLogger" class="com.yet.spring.ConsoleEventLogger" />
+
+	<bean id="cacheFileEventLogger" class="com.yet.spring.CacheFileEventLogger"
+		init-method="init" destroy-method="destroy">
+		<constructor-arg value="C:/d1.txt" />
+		<constructor-arg value="5" />
+	</bean>
+
+	<bean id="event" class="com.yet.spring.Event" scope="prototype">
+		<constructor-arg>
+			<bean class="java.util.Date" />
+		</constructor-arg>
+		<constructor-arg ref="dateFormat">
+		</constructor-arg>
+	</bean>
+
+	<bean id="combinedEventLogger" class="com.yet.spring.CombinedEventLogger">
+		<constructor-arg>
+			<map>
+				<entry key="INFO" value-ref="eventLogger" />
+				<entry key="ERROR" value-ref="fileEventLogger" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+</beans>

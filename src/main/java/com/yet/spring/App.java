@@ -1,16 +1,21 @@
 package com.yet.spring;
 
 
+import java.util.Map;
+
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class App {
 Client client;
 EventLogger eventLogger;
+Map<EventType,EventLogger> loggers;
 
-public App(Client client, EventLogger eventLogger) {
+
+public App(Client client, EventLogger eventLogger,Map<EventType,EventLogger> loggers) {
 	this.client = client;
 	this.eventLogger = eventLogger;
+	this.loggers=loggers;
 }
 
 public static void main(String[] args){
@@ -18,7 +23,7 @@ public static void main(String[] args){
 	App app=(App)ctx.getBean("app");
 	Event a1=((Event)ctx.getBean("event"));
 	a1.setMsg("ABRACADABRA");
-	app.logEvent(a1);
+	app.logEvent(a1,EventType.INFO);
 	try {
 		Thread.sleep(1000);
 	} catch (InterruptedException e) {
@@ -27,12 +32,17 @@ public static void main(String[] args){
 	}
 	Event a2=((Event)ctx.getBean("event"));
 	a2.setMsg("SHUBRABUBRA");
-	app.logEvent(a2);
+	app.logEvent(a2,null);
+	System.out.println(app.client.getGreeting());
 	ctx.close();
+	
 }
 
-private void logEvent(Event event){
-	event.setMsg(event.getMsg().replaceAll(client.getId(), client.getFullName()));
-	eventLogger.logEvent(event);
+private void logEvent(Event event, EventType type){
+	EventLogger logger=loggers.get(type);
+	if(logger==null){
+		logger=eventLogger;
+	}
+	logger.logEvent(event);
 }
 }

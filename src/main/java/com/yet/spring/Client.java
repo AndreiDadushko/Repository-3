@@ -2,7 +2,7 @@ package com.yet.spring;
 
 public class Client {
 String id;
-
+String greeting;
 String fullName;
 
 public Client(String id, String fullName) {	
@@ -22,4 +22,14 @@ public String getFullName() {
 public void setFullName(String fullName) {
 	this.fullName = fullName;
 }
+
+public String getGreeting() {
+	return greeting;
+}
+
+public void setGreeting(String greeting) {
+	this.greeting = greeting;
+}
+
+
 }
