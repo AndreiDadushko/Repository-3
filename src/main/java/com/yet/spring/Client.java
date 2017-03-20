@@ -1,9 +1,20 @@
 package com.yet.spring;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component("client")
 public class Client {
+	@Value("1")
 String id;
+	@Value("Hey! HEY! HEEEEEEY!")
 String greeting;
+	@Value("VALERA")
 String fullName;
+
+public Client() {
+		super();
+	}
 
 public Client(String id, String fullName) {	
 	this.id = id;
